@@ -1,0 +1,23 @@
+name: CI
+
+on: push
+
+permissions:
+  contents: read
+
+jobs:
+  test-and-build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.14'
+
+      - name: Run the health endpoint test
+        run: python -m unittest -v
+
+      - name: Build the Docker image
+        run: docker build -t devops-health-service:ci .
